@@ -2,7 +2,9 @@ cd C:\Users\tk231\OneDrive\Desktop\web-boilerplates\mern-boilerplate
 
 @"
 # MERN Boilerplate
+## 🌐 Live Demo
 
+👉 [Visit Live Demo](https://mern-auth-temlplate-96bvllt67-suresh-kumars-projects-b051ab5c.vercel.app/)
 Reusable MERN stack starter template.
 
 ## Stack
