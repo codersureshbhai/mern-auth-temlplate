@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import crypto from "crypto";
 
 export const registerUser = async (req, res) => {
   try {
@@ -66,6 +67,7 @@ export const loginUser = async (req, res) => {
       });
     }
 
+    
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
@@ -89,6 +91,51 @@ export const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.error("LOGIN ERROR:", error);
+
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.resetPasswordToken = hashedToken;
+
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+
+    await user.save();
+
+    console.log("RESET TOKEN:", resetToken);
+
+    res.json({
+      message: "Password reset token generated",
+    });
+  } catch (error) {
+    console.error("FORGOT PASSWORD ERROR:", error);
 
     res.status(500).json({
       message: "Server error",
