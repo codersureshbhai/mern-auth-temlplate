@@ -11,3 +11,8 @@ export const loginUser = (userData) => {
 export const getProfile = () => {
   return api.get("/users/profile");
 };
+export const forgotPassword = (email) =>
+  api.post("/auth/forgot-password", { email });
+
+export const resetPassword = (token, password) =>
+  api.post(`/auth/reset-password/${token}`, { password });

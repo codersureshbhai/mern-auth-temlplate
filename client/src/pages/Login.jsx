@@ -3,6 +3,7 @@ import { loginUser } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 function Login() {
   const { login } = useAuth();
@@ -20,6 +21,7 @@ function Login() {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -38,6 +40,7 @@ function Login() {
       setMessage(error.response?.data?.message || "Login failed");
     }
   };
+
   return (
     <div>
       <h1>Login</h1>
@@ -60,6 +63,8 @@ function Login() {
           value={formData.password}
           onChange={handleChange}
         />
+
+        <Link to="/forgot-password">Forgot password?</Link>
 
         <Button type="submit">Login</Button>
       </form>
